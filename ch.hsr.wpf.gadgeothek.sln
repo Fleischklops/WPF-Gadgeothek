@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ch.hsr.wpf.gadgeothek.sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ch.hsr.wpf.gadgeothek.websockets-listener", "ch.hsr.wpf.gadgeothek.websockets-listener\ch.hsr.wpf.gadgeothek.websockets-listener.csproj", "{77AF1E5C-E408-4388-A4C0-C65FF3B00E86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ch.hsr.wpf.gadgeothek.gui", "ch.hsr.wpf.gadgeothek.gui\ch.hsr.wpf.gadgeothek.gui.csproj", "{F7F06E06-6721-478D-8D4B-D037FF3C37FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{77AF1E5C-E408-4388-A4C0-C65FF3B00E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77AF1E5C-E408-4388-A4C0-C65FF3B00E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77AF1E5C-E408-4388-A4C0-C65FF3B00E86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F06E06-6721-478D-8D4B-D037FF3C37FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F06E06-6721-478D-8D4B-D037FF3C37FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F06E06-6721-478D-8D4B-D037FF3C37FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F06E06-6721-478D-8D4B-D037FF3C37FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
