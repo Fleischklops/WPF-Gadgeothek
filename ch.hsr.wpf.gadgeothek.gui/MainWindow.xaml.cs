@@ -21,13 +21,15 @@ namespace ch.hsr.wpf.gadgeothek.gui
 {
     public partial class MainWindow : Window
     {
+        System.Windows.Threading.DispatcherTimer refreshTimer = new System.Windows.Threading.DispatcherTimer();
+       
         LibraryAdminService libserv;
 
         public ObservableCollection<Gadget> GadgetList;
         public ObservableCollection<Loan> LoanList;
         public ObservableCollection<Reservation> ReservationList;
 
-        private int NextInventoryNumber;
+        private int NextInventoryNumber = 0;
 
         public MainWindow()
         {
@@ -40,9 +42,25 @@ namespace ch.hsr.wpf.gadgeothek.gui
         {
             libserv = new LibraryAdminService("http://mge2.dev.ifs.hsr.ch/");
 
-            GetDataFromServer();
+            GadgetList = new ObservableCollection<Gadget>();
+            dataGrid_Gadget.ItemsSource = GadgetList;
+
+            LoanList = new ObservableCollection<Loan>();
+            dataGrid_Loan.ItemsSource = LoanList;
+
+            ReservationList = new ObservableCollection<Reservation>();
+            dataGrid_Reservation.ItemsSource = ReservationList;
+
+            refreshTimer.Tick += new EventHandler(refreshTimer_Tick);
+            refreshTimer.Interval = new TimeSpan(0, 0, 1);
+            refreshTimer.Start();
             
             comboBox_GadgetCondition.ItemsSource = Enum.GetValues(typeof(domain.Condition));
+        }
+
+        private void refreshTimer_Tick(object sender, EventArgs e)
+        {
+            GetDataFromServer();
         }
 
         private void GetDataFromServer()
@@ -54,22 +72,80 @@ namespace ch.hsr.wpf.gadgeothek.gui
 
         private void RefreshGadget()
         {
-            GadgetList = GetGadgetFromServer();
-            dataGrid_Gadget.ItemsSource = GadgetList;
+            ObservableCollection<Gadget> newList = GetGadgetFromServer();
+            foreach (Gadget g in newList)
+            {
+                if (!GadgetList.Contains(g))
+                {
+                    GadgetList.Add(g);
+                }
+            }
+            ObservableCollection<Gadget> toRemove = new ObservableCollection<Gadget>();
+            foreach (Gadget g in GadgetList)
+            {
+                if (!newList.Contains(g))
+                {
+                    toRemove.Add(g);
+                }
+            }
+            foreach (Gadget g in toRemove)
+            {
+                GadgetList.Remove(g);
+            }
 
-            NextInventoryNumber = Convert.ToInt32(GadgetList.LastOrDefault<Gadget>().InventoryNumber) + 1;
+            try
+            {
+                NextInventoryNumber = Convert.ToInt32(GadgetList.LastOrDefault<Gadget>().InventoryNumber) + 1;
+            }
+            catch { }
         }
 
         private void RefreshLoan()
         {
-            LoanList = GetLoanFromServer();
-            dataGrid_Loan.ItemsSource = LoanList;
+            ObservableCollection<Loan> newList = GetLoanFromServer();
+            foreach (Loan l in newList)
+            {
+                if (!LoanList.Contains(l))
+                {
+                    LoanList.Add(l);
+                }
+            }
+            ObservableCollection<Loan> toRemove = new ObservableCollection<Loan>();
+            foreach (Loan l in LoanList)
+            {
+                if (!newList.Contains(l))
+                {
+                    toRemove.Add(l);
+                }
+            }
+            foreach (Loan l in toRemove)
+            {
+                LoanList.Remove(l);
+            }
         }
 
         private void RefreshReservation()
         {
-            ReservationList = GetReservationFromServer();
-            dataGrid_Reservation.ItemsSource = ReservationList;
+            ObservableCollection<Reservation> newList = GetReservationFromServer();
+            foreach (Reservation r in newList)
+            {
+                if (!ReservationList.Contains(r))
+                {
+                    ReservationList.Add(r);
+                }
+            }
+            ObservableCollection<Reservation> toRemove = new ObservableCollection<Reservation>();
+            foreach (Reservation r in ReservationList)
+            {
+                if (!newList.Contains(r))
+                {
+                    toRemove.Add(r);
+                }
+            }
+            foreach (Reservation r in toRemove)
+            {
+                ReservationList.Remove(r);
+            }
         }
 
         private ObservableCollection<Gadget> GetGadgetFromServer()
@@ -94,6 +170,14 @@ namespace ch.hsr.wpf.gadgeothek.gui
 
             libserv.AddGadget(new Gadget(textBox_GadgetName.Text) { InventoryNumber = NextInventoryNumber.ToString(), Manufacturer = textBox_GadgetManufactur.Text, Price = Convert.ToDouble(textBox_GadgetPrice.Text), Condition = cond });
             RefreshGadget();
+        }
+
+        private void ContextMenu_DataGridGadget_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            Gadget g = GadgetList.ElementAt(dataGrid_Gadget.SelectedIndex);
+            GadgetList.Remove(g);
+
+            libserv.DeleteGadget(g);
         }
     }
 }

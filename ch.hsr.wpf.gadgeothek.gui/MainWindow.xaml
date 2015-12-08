@@ -10,7 +10,13 @@
         <TabControl>
             <TabItem Header="Gadgets">
                 <DockPanel>
-                    <DataGrid Name="dataGrid_Gadget" DockPanel.Dock="Left" MinWidth="300" />
+                    <DataGrid Name="dataGrid_Gadget" DockPanel.Dock="Left" MinWidth="300" SelectionMode="Single" >
+                        <DataGrid.ContextMenu>
+                            <ContextMenu >
+                                <MenuItem Header="Delete Gadget" Click="ContextMenu_DataGridGadget_Delete_Click" />
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                    </DataGrid>
                     <DockPanel>
                         <Button DockPanel.Dock="Bottom" Content="Add Gadget" Click="Button_AddGadget_Click" />
                         <Grid>
